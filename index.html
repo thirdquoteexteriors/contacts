@@ -256,7 +256,16 @@ function showSyncStatus(msg, success, error) {
 
 async function manualSync() { await loadFromSheets(); renderContacts(); }
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function uid() {
+  // Find highest existing ID number
+  let max = 0;
+  contacts.forEach(c => {
+    const n = parseInt(c.id, 10);
+    if (!isNaN(n) && n > max) max = n;
+  });
+  const next = max + 1;
+  return String(next).padStart(4, '0');
+}
 function esc(s) { return (s||'').toString().replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function toast(msg) {

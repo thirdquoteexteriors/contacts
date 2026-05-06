@@ -189,7 +189,22 @@
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGkrFjiH5piIMP_zIBlaVawSXC3ri-H7NcGH4UxYNSXebBNS0fpSm5Q8nv6X-QRO0s_g/exec';
 
-function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+async function uid() {
+  try {
+    const result = await fetch(SCRIPT_URL + '?action=getAll', { redirect: 'follow' });
+    const data = await result.json();
+    const records = data.records || [];
+    let max = 0;
+    records.forEach(c => {
+      const n = parseInt(c.id, 10);
+      if (!isNaN(n) && n > max) max = n;
+    });
+    return String(max + 1).padStart(4, '0');
+  } catch(e) {
+    // Fallback: use timestamp if can't reach sheet
+    return String(Date.now()).slice(-4);
+  }
+}
 
 async function submitLead() {
   const first   = document.getElementById('fFirst').value.trim();
