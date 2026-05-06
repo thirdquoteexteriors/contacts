@@ -389,7 +389,7 @@ function renderContacts() {
 }
 
 function openContactModal(id) {
-  const c = id ? contacts.find(x=>x.id===id) : null;
+  const c = id ? contacts.find(x=>String(x.id)===String(id)) : null;
   const cSvcs = getSvcs(c||{});
   showModal(`
     <div class="modal-header">
@@ -466,7 +466,7 @@ async function saveContact(id) {
   };
   let record;
   if (id) {
-    const idx = contacts.findIndex(c=>c.id===id);
+    const idx = contacts.findIndex(c=>String(c.id)===String(id));
     if (idx!==-1) { contacts[idx]={...contacts[idx],...data}; record=contacts[idx]; }
   } else {
     record = { id: uid(), created: new Date().toISOString(), ...data };
@@ -513,7 +513,7 @@ function showFormError(msg) {
 
 async function deleteContact(id) {
   if (!confirm('Delete this contact?')) return;
-  contacts = contacts.filter(c=>c.id!==id);
+  contacts = contacts.filter(c=>String(c.id)!==String(id));
   saveLocal();
   renderContacts();
   toast('Contact deleted');
