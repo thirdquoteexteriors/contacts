@@ -352,7 +352,7 @@ function renderContacts() {
     const details = [
       c.phone ? `<span class="card-detail"><span class="di">📞</span><a href="tel:${esc(c.phone)}">${esc(c.phone)}</a></span>` : '',
       c.email ? `<span class="card-detail"><span class="di">📧</span><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></span>` : '',
-      fullAddr ? `<span class="card-detail"><span class="di">📍</span>${esc(fullAddr)}</span>` : '',
+      fullAddr ? `<span class="card-detail"><span class="di">📍</span><a href="https://maps.google.com/?q=${encodeURIComponent(fullAddr)}" target="_blank" style="color:#4b5563;text-decoration:none">${esc(fullAddr)}</a></span>` : '',
     ].filter(Boolean).join('');
 
     return `<div class="contact-card">
@@ -372,6 +372,7 @@ function renderContacts() {
         ${c.phone ? `<button class="card-btn call-btn" onclick="window.location='tel:${esc(c.phone)}'">📞 Call</button>` : ''}
         ${c.email ? `<button class="card-btn email-btn" onclick="window.location='mailto:${esc(c.email)}'">📧 Email</button>` : ''}
         <button class="card-btn danger" onclick="deleteContact('${c.id}')">🗑</button>
+        ${fullAddr ? `<button class="card-btn" onclick="openNav('${encodeURIComponent(fullAddr)}')">🧭 Nav</button>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -463,6 +464,32 @@ async function saveContact(id) {
   renderContacts();
   toast(id?'Contact updated ✓':'Lead added! ✓');
   await pushRecord(record);
+}
+
+
+function openNav(encodedAddr) {
+  const addr = decodeURIComponent(encodedAddr);
+  const isMobile = /Android|iPhone|iPad/.test(navigator.userAgent);
+  if (!isMobile) {
+    window.open('https://maps.google.com/?q=' + encodeURIComponent(addr), '_blank');
+    return;
+  }
+  const existing = document.getElementById('navPicker');
+  if (existing) existing.remove();
+  const div = document.createElement('div');
+  div.id = 'navPicker';
+  div.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;padding:20px;z-index:9999;box-shadow:0 -4px 20px rgba(0,0,0,0.2);';
+  div.innerHTML = `
+    <div style="font-size:15px;font-weight:600;color:#111827;margin-bottom:16px;text-align:center">Open directions in...</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="https://maps.google.com/?q=${encodeURIComponent(addr)}" style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e5e7eb;border-radius:12px;text-decoration:none;color:#111827;font-weight:500;font-size:15px">🗺️ Google Maps</a>
+      <a href="https://waze.com/ul?q=${encodeURIComponent(addr)}" style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e5e7eb;border-radius:12px;text-decoration:none;color:#111827;font-weight:500;font-size:15px">🚗 Waze</a>
+      <button onclick="document.getElementById('navPicker').remove()" style="padding:13px;border:none;background:#f3f4f6;border-radius:12px;font-size:14px;font-weight:500;color:#6b7280;cursor:pointer;font-family:inherit;margin-top:4px">Cancel</button>
+    </div>`;
+  document.body.appendChild(div);
+  setTimeout(() => document.addEventListener('click', function h(e) {
+    if (!div.contains(e.target)) { div.remove(); document.removeEventListener('click', h); }
+  }), 150);
 }
 
 function showFormError(msg) {
