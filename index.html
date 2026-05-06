@@ -38,39 +38,37 @@
   .filter-select:focus { outline: none; border-color: #1a7a54; }
   .results-count { font-size: 12px; color: #9ca3af; padding: 0 2px; }
 
+  /* Contact cards */
   .contacts-list { display: flex; flex-direction: column; gap: 10px; }
-  .contact-card { background: #fff; border-radius: 14px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border: 1px solid #f3f4f6; transition: box-shadow 0.15s; }
+  .contact-card { background: #fff; border-radius: 14px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); border: 1px solid #f3f4f6; transition: box-shadow 0.15s; }
   .contact-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
-  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
-  .card-name { font-size: 16px; font-weight: 600; color: #111827; }
-  .card-source { font-size: 11px; color: #9ca3af; margin-top: 2px; font-style: italic; }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+  .card-name { font-size: 15px; font-weight: 600; color: #111827; line-height: 1.2; }
 
-  .card-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; margin-bottom: 10px; }
-  .card-info-item { display: flex; flex-direction: column; }
-  .card-info-label { font-size: 10px; font-weight: 700; color: #d1d5db; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1px; }
-  .card-info-value { font-size: 13px; color: #374151; }
-  .card-info-value.link { color: #2563eb; }
-  .card-info-value.empty { color: #d1d5db; font-style: italic; }
-
-  .card-location { font-size: 13px; color: #374151; }
-
-  .heat-pill { display: inline-flex; align-items: center; gap: 4px; padding: 4px 11px; border-radius: 20px; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+  .heat-pill { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 20px; font-size: 12px; font-weight: 700; flex-shrink: 0; white-space: nowrap; }
   .heat-1 { background: #eff6ff; color: #2563eb; }
   .heat-2 { background: #ecfdf5; color: #059669; }
   .heat-3 { background: #fffbeb; color: #d97706; }
   .heat-4 { background: #fff7ed; color: #ea580c; }
   .heat-5 { background: #fef2f2; color: #dc2626; }
 
-  .card-services { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
-  .svc-tag { font-size: 11px; background: #f0faf5; color: #1a7a54; padding: 3px 8px; border-radius: 20px; font-weight: 500; border: 1px solid #d1fae5; }
+  /* Compact info row */
+  .card-details { display: flex; flex-wrap: wrap; gap: 4px 12px; margin-bottom: 8px; }
+  .card-detail { font-size: 13px; color: #4b5563; display: flex; align-items: center; gap: 4px; }
+  .card-detail .di { font-size: 12px; opacity: 0.6; }
+  .card-detail a { color: #4b5563; text-decoration: none; }
+  .card-detail a:hover { color: #1a7a54; }
 
-  .card-notes { font-size: 13px; color: #4b5563; background: #f9fafb; border-radius: 8px; padding: 9px 12px; margin-bottom: 10px; line-height: 1.5; border-left: 3px solid #e5e7eb; }
+  .card-services { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .svc-tag { font-size: 11px; background: #f0faf5; color: #1a7a54; padding: 2px 8px; border-radius: 20px; font-weight: 500; border: 1px solid #d1fae5; }
+  .src-tag { font-size: 11px; background: #f5f3ff; color: #7c3aed; padding: 2px 8px; border-radius: 20px; font-weight: 500; border: 1px solid #ddd6fe; }
 
-  .card-date { font-size: 11px; color: #d1d5db; margin-bottom: 10px; }
+  .card-notes { font-size: 13px; color: #4b5563; background: #f9fafb; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; line-height: 1.5; border-left: 3px solid #e5e7eb; }
+  .card-date { font-size: 11px; color: #d1d5db; margin-bottom: 8px; }
 
-  .card-actions { display: flex; gap: 8px; border-top: 1px solid #f3f4f6; padding-top: 10px; }
-  .card-btn { flex: 1; padding: 9px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; text-align: center; }
+  .card-actions { display: flex; gap: 6px; border-top: 1px solid #f3f4f6; padding-top: 10px; }
+  .card-btn { flex: 1; padding: 8px 6px; border-radius: 8px; border: 1px solid #e5e7eb; background: #fff; font-size: 12px; font-weight: 500; color: #374151; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; text-align: center; white-space: nowrap; }
   .card-btn:hover { background: #f9fafb; }
   .card-btn.danger { color: #dc2626; border-color: #fecaca; }
   .card-btn.danger:hover { background: #fee2e2; }
@@ -83,6 +81,7 @@
   .empty-icon { font-size: 44px; margin-bottom: 12px; }
   .empty-title { font-size: 16px; font-weight: 600; color: #6b7280; margin-bottom: 6px; }
 
+  /* Modal */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 1000; display: flex; align-items: flex-end; justify-content: center; }
   @media (min-width: 520px) { .modal-overlay { align-items: center; padding: 16px; } }
   .modal { background: #fff; border-radius: 20px 20px 0 0; width: 100%; max-width: 520px; max-height: 93vh; overflow-y: auto; }
@@ -109,6 +108,12 @@
   .svc-lbl { display: flex; align-items: center; gap: 7px; padding: 10px 12px; border: 1.5px solid #e5e7eb; border-radius: 9px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; transition: all 0.15s; user-select: none; }
   .svc-opt input:checked + .svc-lbl { border-color: #1a7a54; background: #e8f5ef; color: #1a7a54; }
 
+  .source-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .src-opt { position: relative; }
+  .src-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .src-lbl { display: flex; align-items: center; gap: 7px; padding: 10px 12px; border: 1.5px solid #e5e7eb; border-radius: 9px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .src-opt input:checked + .src-lbl { border-color: #7c3aed; background: #f5f3ff; color: #7c3aed; }
+
   .heat-scale { display: flex; gap: 6px; }
   .heat-opt { position: relative; flex: 1; }
   .heat-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
@@ -120,12 +125,6 @@
   .heat-opt:nth-child(3) input:checked + .heat-lbl { border-color: #fbbf24; background: #fffbeb; }
   .heat-opt:nth-child(4) input:checked + .heat-lbl { border-color: #f97316; background: #fff7ed; }
   .heat-opt:nth-child(5) input:checked + .heat-lbl { border-color: #ef4444; background: #fef2f2; }
-
-  .source-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .src-opt { position: relative; }
-  .src-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
-  .src-lbl { display: flex; align-items: center; gap: 7px; padding: 10px 12px; border: 1.5px solid #e5e7eb; border-radius: 9px; font-size: 13px; font-weight: 500; color: #374151; cursor: pointer; transition: all 0.15s; user-select: none; }
-  .src-opt input:checked + .src-lbl { border-color: #7c3aed; background: #f5f3ff; color: #7c3aed; }
 
   .btn { padding: 12px 16px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; font-size: 14px; font-weight: 600; color: #374151; cursor: pointer; font-family: 'DM Sans', sans-serif; flex: 1; }
   .btn-primary { background: #1a7a54; color: #fff; border-color: #1a7a54; }
@@ -156,7 +155,7 @@
   <div class="filters-card">
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
-      <input class="search-input" id="searchInput" placeholder="Search name, phone, email, city, state..." oninput="renderContacts()">
+      <input class="search-input" id="searchInput" placeholder="Search name, phone, email, city..." oninput="renderContacts()">
     </div>
     <div class="filter-row">
       <select class="filter-select" id="sortBy" onchange="renderContacts()">
@@ -209,7 +208,7 @@
 
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGkrFjiH5piIMP_zIBlaVawSXC3ri-H7NcGH4UxYNSXebBNS0fpSm5Q8nv6X-QRO0s_g/exec';
-const LS_KEY = 'tq_contacts_v2';
+const LS_KEY = 'tq_contacts_v3';
 const SERVICES = ['Roofing','Siding','Gutters','Deck/Patio','Concrete','Windows','Paint','Other'];
 const SOURCES = ['Yard sign','Door knock','Referral','Previous client'];
 
@@ -241,7 +240,7 @@ async function pushRecord(record) {
 }
 
 async function pushDelete(id) {
-  try { await gasCall({ action: 'delete', sheet: 'Contacts', id }); } catch(e) {}
+  try { await gasCall({ action: 'delete', sheet: 'Contacts', id }); } catch(e) {} 
 }
 
 let syncTimer;
@@ -287,11 +286,6 @@ function formatDate(iso) {
 function getSvcs(c) {
   if (Array.isArray(c.services)) return c.services.filter(Boolean);
   return (c.services||'').split(',').map(s=>s.trim()).filter(Boolean);
-}
-
-function infoItem(label, value, cls) {
-  const val = value ? `<div class="card-info-value ${cls||''}">${esc(value)}</div>` : `<div class="card-info-value empty">—</div>`;
-  return `<div class="card-info-item"><div class="card-info-label">${label}</div>${val}</div>`;
 }
 
 function renderContacts() {
@@ -349,24 +343,28 @@ function renderContacts() {
 
   document.getElementById('contactsList').innerHTML = filtered.map(c => {
     const name = [c.first,c.last].filter(Boolean).join(' ') || 'Unknown';
-    const location = [c.city,c.state].filter(Boolean).join(', ');
     const svcs = getSvcs(c);
     const heat = c.heat ? `<span class="heat-pill heat-${c.heat}">${heatLabel(c.heat)}</span>` : '';
+    const location = [c.city, c.state].filter(Boolean).join(', ');
+    const fullAddr = [c.street, location, c.zip].filter(Boolean).join(' ');
+
+    // Build compact detail items — only show if value exists
+    const details = [
+      c.phone ? `<span class="card-detail"><span class="di">📞</span><a href="tel:${esc(c.phone)}">${esc(c.phone)}</a></span>` : '',
+      c.email ? `<span class="card-detail"><span class="di">📧</span><a href="mailto:${esc(c.email)}">${esc(c.email)}</a></span>` : '',
+      fullAddr ? `<span class="card-detail"><span class="di">📍</span>${esc(fullAddr)}</span>` : '',
+    ].filter(Boolean).join('');
+
     return `<div class="contact-card">
-      <div class="card-header">
-        <div>
-          <div class="card-name">${esc(name)}</div>
-          ${c.source ? `<div class="card-source">via ${esc(c.source)}</div>` : ''}
-        </div>
+      <div class="card-top">
+        <div class="card-name">${esc(name)}</div>
         ${heat}
       </div>
-      <div class="card-info-grid">
-        ${infoItem('Phone', c.phone)}
-        ${infoItem('Email', c.email)}
-        ${infoItem('City', c.city)}
-        ${infoItem('State', c.state)}
-      </div>
-      ${svcs.length ? `<div class="card-services">${svcs.map(s=>`<span class="svc-tag">${esc(s)}</span>`).join('')}</div>` : ''}
+      ${details ? `<div class="card-details">${details}</div>` : ''}
+      ${svcs.length || c.source ? `<div class="card-services">
+        ${c.source ? `<span class="src-tag">${esc(c.source)}</span>` : ''}
+        ${svcs.map(s=>`<span class="svc-tag">${esc(s)}</span>`).join('')}
+      </div>` : ''}
       ${c.notes ? `<div class="card-notes">${esc(c.notes)}</div>` : ''}
       <div class="card-date">Added ${formatDate(c.created)}</div>
       <div class="card-actions">
@@ -450,8 +448,7 @@ async function saveContact(id) {
     services: svcs.join(', '),
     heat, source,
     notes: document.getElementById('mNotes').value.trim(),
-    stage: id?(contacts.find(c=>c.id===id)?.stage||'New'):'New',
-    assign: 'Brother', followup: '',
+    stage: 'New', assign: 'Brother', followup: '',
   };
   let record;
   if (id) {
