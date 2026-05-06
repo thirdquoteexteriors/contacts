@@ -4,7 +4,7 @@
 
 const SPREADSHEET_ID = '1RX0OnPif17popjx9dL2ybXndO4XFiJN-lKbwKFAMqk4';
 
-const HEADERS = ['id','first','last','phone','email','street','city','state','zip','address','services','source','heat','notes','created'];
+const HEADERS = ['id','first','last','phone','email','street','city','state','zip','services','source','heat','notes','created'];
 
 function doGet(e) {
   const p = e.parameter || {};

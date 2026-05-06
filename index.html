@@ -444,7 +444,7 @@ async function saveContact(id) {
     first, last: document.getElementById('mLast').value.trim(),
     phone, email: document.getElementById('mEmail').value.trim(),
     street, city, state, zip,
-    address: [street,city,state,zip].filter(Boolean).join(', '),
+    
     services: svcs.join(', '),
     heat, source,
     notes: document.getElementById('mNotes').value.trim(),
