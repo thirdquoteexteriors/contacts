@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Add Lead — Third Quote Exteriors</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { min-height: 100%; font-family: 'DM Sans', sans-serif; background: #f0faf5; color: #1f2937; }
+  .page { max-width: 480px; margin: 0 auto; padding: 24px 16px 48px; }
+  .header { text-align: center; margin-bottom: 28px; }
+  .logo { width: 52px; height: 52px; background: #1a7a54; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 700; color: #fff; margin: 0 auto 12px; }
+  .header h1 { font-size: 20px; font-weight: 600; color: #111827; }
+  .header p { font-size: 14px; color: #6b7280; margin-top: 4px; }
+  .card { background: #fff; border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  .section-label { font-size: 11px; font-weight: 700; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; }
+  .req { color: #dc2626; margin-left: 2px; }
+  .form-input { width: 100%; padding: 12px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 15px; color: #111827; font-family: 'DM Sans', sans-serif; transition: border 0.15s; background: #fff; -webkit-appearance: none; }
+  .form-input:focus { outline: none; border-color: #1a7a54; box-shadow: 0 0 0 3px rgba(26,122,84,0.12); }
+  textarea.form-input { resize: none; min-height: 90px; line-height: 1.5; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .divider { height: 1px; background: #f3f4f6; margin: 20px 0; }
+
+  /* Services */
+  .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .svc-opt { position: relative; }
+  .svc-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .svc-lbl { display: flex; align-items: center; gap: 8px; padding: 11px 14px; border: 1.5px solid #e5e7eb; border-radius: 10px; font-size: 14px; font-weight: 500; color: #374151; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .svc-lbl .ico { font-size: 17px; }
+  .svc-opt input:checked + .svc-lbl { border-color: #1a7a54; background: #e8f5ef; color: #1a7a54; }
+
+  /* Heat scale */
+  .heat-scale { display: flex; gap: 8px; margin-top: 6px; }
+  .heat-opt { position: relative; flex: 1; }
+  .heat-opt input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .heat-lbl { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 4px; border: 1.5px solid #e5e7eb; border-radius: 10px; cursor: pointer; transition: all 0.15s; user-select: none; }
+  .heat-num { font-size: 18px; font-weight: 700; }
+  .heat-tag { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #9ca3af; text-align: center; line-height: 1.2; }
+  .heat-opt input:checked + .heat-lbl { border-width: 2px; }
+  .heat-opt:nth-child(1) input:checked + .heat-lbl { border-color: #60a5fa; background: #eff6ff; color: #2563eb; }
+  .heat-opt:nth-child(1) .heat-lbl:hover { border-color: #60a5fa; background: #eff6ff; }
+  .heat-opt:nth-child(2) input:checked + .heat-lbl { border-color: #34d399; background: #ecfdf5; color: #059669; }
+  .heat-opt:nth-child(2) .heat-lbl:hover { border-color: #34d399; background: #ecfdf5; }
+  .heat-opt:nth-child(3) input:checked + .heat-lbl { border-color: #fbbf24; background: #fffbeb; color: #d97706; }
+  .heat-opt:nth-child(3) .heat-lbl:hover { border-color: #fbbf24; background: #fffbeb; }
+  .heat-opt:nth-child(4) input:checked + .heat-lbl { border-color: #f97316; background: #fff7ed; color: #ea580c; }
+  .heat-opt:nth-child(4) .heat-lbl:hover { border-color: #f97316; background: #fff7ed; }
+  .heat-opt:nth-child(5) input:checked + .heat-lbl { border-color: #ef4444; background: #fef2f2; color: #dc2626; }
+  .heat-opt:nth-child(5) .heat-lbl:hover { border-color: #ef4444; background: #fef2f2; }
+  .heat-num { color: inherit; }
+
+  /* Submit */
+  .submit-btn { width: 100%; padding: 16px; background: #1a7a54; color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
+  .submit-btn:hover { background: #155f42; }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
+
+  /* Success */
+  .success { display: none; text-align: center; padding: 36px 20px; }
+  .success-icon { font-size: 60px; margin-bottom: 16px; }
+  .success h2 { font-size: 22px; font-weight: 600; color: #111827; margin-bottom: 8px; }
+  .success p { font-size: 14px; color: #6b7280; margin-bottom: 24px; line-height: 1.6; }
+  .add-another-btn { width: 100%; padding: 14px; background: #e8f5ef; color: #1a7a54; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; }
+
+  .error-msg { background: #fee2e2; color: #dc2626; padding: 12px 14px; border-radius: 10px; font-size: 13px; margin-bottom: 16px; display: none; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="header">
+    <div class="logo">TQ</div>
+    <h1>Third Quote Exteriors</h1>
+    <p>New lead</p>
+  </div>
+
+  <div class="card">
+    <div id="formWrap">
+      <div class="error-msg" id="errorMsg"></div>
+
+      <!-- Contact Info -->
+      <div class="section-label">Contact info</div>
+      <div class="two-col">
+        <div class="form-group">
+          <label class="form-label">First name <span class="req">*</span></label>
+          <input class="form-input" id="fFirst" type="text" placeholder="John" autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last name</label>
+          <input class="form-input" id="fLast" type="text" placeholder="Smith" autocomplete="family-name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone <span class="req">*</span></label>
+        <input class="form-input" id="fPhone" type="tel" placeholder="(360) 555-0100" autocomplete="tel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input class="form-input" id="fEmail" type="email" placeholder="john@email.com" autocomplete="email">
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Address -->
+      <div class="section-label">Property address</div>
+      <div class="form-group">
+        <label class="form-label">Street address</label>
+        <input class="form-input" id="fStreet" type="text" placeholder="123 Main St" autocomplete="address-line1">
+      </div>
+      <div class="form-group">
+        <label class="form-label">City</label>
+        <input class="form-input" id="fCity" type="text" placeholder="Battle Ground" autocomplete="address-level2">
+      </div>
+      <div class="two-col">
+        <div class="form-group">
+          <label class="form-label">State</label>
+          <input class="form-input" id="fState" type="text" placeholder="WA" maxlength="2" autocomplete="address-level1" style="text-transform:uppercase">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Zip</label>
+          <input class="form-input" id="fZip" type="text" placeholder="98604" maxlength="10" inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Services -->
+      <div class="section-label">Interested in</div>
+      <div class="services-grid" style="margin-bottom:0">
+        <div class="svc-opt"><input type="checkbox" id="sRoof" value="Roofing"><label class="svc-lbl" for="sRoof"><span class="ico">🏠</span> Roofing</label></div>
+        <div class="svc-opt"><input type="checkbox" id="sSiding" value="Siding"><label class="svc-lbl" for="sSiding"><span class="ico">🧱</span> Siding</label></div>
+        <div class="svc-opt"><input type="checkbox" id="sDeck" value="Deck/Patio"><label class="svc-lbl" for="sDeck"><span class="ico">🪵</span> Deck/Patio</label></div>
+        <div class="svc-opt"><input type="checkbox" id="sConcrete" value="Concrete"><label class="svc-lbl" for="sConcrete"><span class="ico">🔲</span> Concrete</label></div>
+        <div class="svc-opt"><input type="checkbox" id="sWindows" value="Windows"><label class="svc-lbl" for="sWindows"><span class="ico">🪟</span> Windows</label></div>
+        <div class="svc-opt"><input type="checkbox" id="sPaint" value="Paint"><label class="svc-lbl" for="sPaint"><span class="ico">🎨</span> Paint</label></div>
+        <div class="svc-opt" style="grid-column:1/-1"><input type="checkbox" id="sOther" value="Other"><label class="svc-lbl" for="sOther"><span class="ico">➕</span> Other</label></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Lead Temperature -->
+      <div class="section-label">Lead temperature</div>
+      <div class="heat-scale">
+        <div class="heat-opt">
+          <input type="radio" name="heat" id="h1" value="1">
+          <label class="heat-lbl" for="h1"><span class="heat-num">1</span><span class="heat-tag">Cold</span></label>
+        </div>
+        <div class="heat-opt">
+          <input type="radio" name="heat" id="h2" value="2">
+          <label class="heat-lbl" for="h2"><span class="heat-num">2</span><span class="heat-tag">Cool</span></label>
+        </div>
+        <div class="heat-opt">
+          <input type="radio" name="heat" id="h3" value="3">
+          <label class="heat-lbl" for="h3"><span class="heat-num">3</span><span class="heat-tag">Warm</span></label>
+        </div>
+        <div class="heat-opt">
+          <input type="radio" name="heat" id="h4" value="4">
+          <label class="heat-lbl" for="h4"><span class="heat-num">4</span><span class="heat-tag">Hot</span></label>
+        </div>
+        <div class="heat-opt">
+          <input type="radio" name="heat" id="h5" value="5">
+          <label class="heat-lbl" for="h5"><span class="heat-num">5</span><span class="heat-tag">On Fire</span></label>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Notes -->
+      <div class="form-group">
+        <label class="form-label">Notes</label>
+        <textarea class="form-input" id="fNotes" placeholder="Project details, best time to call, etc."></textarea>
+      </div>
+
+      <button class="submit-btn" id="submitBtn" onclick="submitLead()">Submit Lead</button>
+    </div>
+
+    <!-- Success screen -->
+    <div class="success" id="successMsg">
+      <div class="success-icon">✅</div>
+      <h2>Lead added!</h2>
+      <p id="successDetail"></p>
+      <button class="add-another-btn" onclick="resetForm()">Add another lead</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGkrFjiH5piIMP_zIBlaVawSXC3ri-H7NcGH4UxYNSXebBNS0fpSm5Q8nv6X-QRO0s_g/exec';
+
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+async function submitLead() {
+  const first   = document.getElementById('fFirst').value.trim();
+  const last    = document.getElementById('fLast').value.trim();
+  const phone   = document.getElementById('fPhone').value.trim();
+  const email   = document.getElementById('fEmail').value.trim();
+  const street  = document.getElementById('fStreet').value.trim();
+  const city    = document.getElementById('fCity').value.trim();
+  const state   = document.getElementById('fState').value.trim().toUpperCase();
+  const zip     = document.getElementById('fZip').value.trim();
+  const notes   = document.getElementById('fNotes').value.trim();
+  const heat    = document.querySelector('input[name="heat"]:checked')?.value || '';
+  const services = [...document.querySelectorAll('.svc-opt input:checked')].map(cb => cb.value);
+
+  if (!first) { showError('Please enter a first name.'); return; }
+  if (!phone) { showError('Please enter a phone number.'); return; }
+  document.getElementById('errorMsg').style.display = 'none';
+
+  const fullAddress = [street, city, state, zip].filter(Boolean).join(', ');
+
+  const record = {
+    id:       uid(),
+    first,    last,
+    phone,    email,
+    street,   city,   state,  zip,
+    address:  fullAddress,
+    stage:    'New',
+    services: services.join(', '),
+    source:   'Door knock',
+    assign:   'Brother',
+    followup: '',
+    heat,
+    notes,
+    created:  new Date().toISOString(),
+  };
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  try {
+    const url = SCRIPT_URL + '?' + new URLSearchParams({
+      action: 'upsert',
+      sheet: 'Contacts',
+      record: JSON.stringify(record),
+    }).toString();
+
+    await fetch(url, { redirect: 'follow' });
+
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('successMsg').style.display = 'block';
+    const heatLabels = { '1':'❄️ Cold', '2':'🟢 Cool', '3':'🟡 Warm', '4':'🟠 Hot', '5':'🔥 On Fire' };
+    document.getElementById('successDetail').textContent =
+      `${first} ${last} added as a new lead.${heat ? ' Temperature: ' + heatLabels[heat] : ''}`;
+
+  } catch(err) {
+    showError('Something went wrong. Please try again.');
+    btn.disabled = false;
+    btn.textContent = 'Submit Lead';
+  }
+}
+
+function showError(msg) {
+  const el = document.getElementById('errorMsg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  window.scrollTo(0, 0);
+}
+
+function resetForm() {
+  ['fFirst','fLast','fPhone','fEmail','fStreet','fCity','fState','fZip','fNotes'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.querySelectorAll('.svc-opt input').forEach(cb => cb.checked = false);
+  document.querySelectorAll('input[name="heat"]').forEach(r => r.checked = false);
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'Submit Lead';
+  document.getElementById('successMsg').style.display = 'none';
+  document.getElementById('formWrap').style.display = 'block';
+  document.getElementById('errorMsg').style.display = 'none';
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
