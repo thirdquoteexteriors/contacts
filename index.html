@@ -373,7 +373,6 @@ function renderContacts() {
         <button class="card-btn" onclick="openContactModal('${c.id}')">✏️ Edit</button>
         ${c.phone ? `<button class="card-btn call-btn" onclick="window.location='tel:${esc(c.phone)}'">📞 Call</button>` : ''}
         ${c.email ? `<button class="card-btn email-btn" onclick="window.location='mailto:${esc(c.email)}'">📧 Email</button>` : ''}
-        <button class="card-btn danger" onclick="deleteContact('${c.id}')">🗑</button>
         ${fullAddr ? `<button class="card-btn" onclick="openNav('${encodeURIComponent(fullAddr)}')">🧭 Nav</button>` : ''}
       </div>
     </div>`;
