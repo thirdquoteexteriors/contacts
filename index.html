@@ -131,6 +131,8 @@
   .btn-primary:hover { background: #155f42; }
   .btn-delete { background: #fee2e2; color: #dc2626; border-color: #fca5a5; flex:none; }
   .btn-delete:hover { background: #fecaca; }
+  .card-btn.appt-btn { color: #7c3aed; border-color: #ddd6fe; }
+  .card-btn.appt-btn:hover { background: #f5f3ff; }
   .btn:hover { background: #f9fafb; }
 
   .toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); background: #111827; color: #fff; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; opacity: 0; transition: all 0.25s; pointer-events: none; white-space: nowrap; z-index: 9999; }
@@ -383,6 +385,7 @@ function renderContacts() {
         ${c.phone ? `<button class="card-btn call-btn" onclick="window.location='tel:${esc(c.phone)}'">📞 Call</button>` : ''}
         ${c.email ? `<button class="card-btn email-btn" onclick="window.location='mailto:${esc(c.email)}'">📧 Email</button>` : ''}
         ${fullAddr ? `<button class="card-btn" onclick="openNav('${encodeURIComponent(fullAddr)}')">🧭 Nav</button>` : ''}
+        <button class="card-btn appt-btn" onclick="openAppt('${encodeURIComponent(name)}','${encodeURIComponent(fullAddr||'')}')">📅 Appt</button>
       </div>
     </div>`;
   }).join('');
@@ -479,6 +482,41 @@ async function saveContact(id) {
   await pushRecord(record);
 }
 
+
+
+function openAppt(encodedName, encodedAddr) {
+  const name = decodeURIComponent(encodedName);
+  const addr = decodeURIComponent(encodedAddr);
+  const isMobile = /Android|iPhone|iPad/.test(navigator.userAgent);
+
+  // Build Google Calendar URL
+  const title = encodeURIComponent('Third Quote Estimate — ' + name);
+  const location = encodeURIComponent(addr);
+  const calUrl = `https://calendar.google.com/calendar/r/eventedit?text=${title}&location=${location}&details=${encodeURIComponent('Lead from Third Quote Exteriors CRM')}`;
+
+  if (!isMobile) {
+    window.open(calUrl, '_blank');
+    return;
+  }
+
+  // On mobile show picker — Google Calendar or native
+  const existing = document.getElementById('apptPicker');
+  if (existing) existing.remove();
+  const div = document.createElement('div');
+  div.id = 'apptPicker';
+  div.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;padding:20px;z-index:9999;box-shadow:0 -4px 20px rgba(0,0,0,0.2);';
+  div.innerHTML = `
+    <div style="font-size:15px;font-weight:600;color:#111827;margin-bottom:4px;text-align:center">Set appointment</div>
+    <div style="font-size:13px;color:#9ca3af;margin-bottom:16px;text-align:center">${name}</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="${calUrl}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e5e7eb;border-radius:12px;text-decoration:none;color:#111827;font-weight:500;font-size:15px">📅 Google Calendar</a>
+      <button onclick="document.getElementById('apptPicker').remove()" style="padding:13px;border:none;background:#f3f4f6;border-radius:12px;font-size:14px;font-weight:500;color:#6b7280;cursor:pointer;font-family:inherit;margin-top:4px">Cancel</button>
+    </div>`;
+  document.body.appendChild(div);
+  setTimeout(() => document.addEventListener('click', function h(e) {
+    if (!div.contains(e.target)) { div.remove(); document.removeEventListener('click', h); }
+  }), 150);
+}
 
 function openNav(encodedAddr) {
   const addr = decodeURIComponent(encodedAddr);
