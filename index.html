@@ -213,7 +213,7 @@
 <script>
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyGkrFjiH5piIMP_zIBlaVawSXC3ri-H7NcGH4UxYNSXebBNS0fpSm5Q8nv6X-QRO0s_g/exec';
 const LS_KEY = 'tq_contacts_v3';
-const SERVICES = ['Roofing','Siding','Gutters','Deck/Patio','Concrete','Windows','Paint','Other'];
+const SERVICES = ['Roofing','Siding','Gutters','Deck/Patio','Concrete','Windows','Paint','Subcontractor','Other'];
 const SOURCES = ['Yard sign','Door knock','Referral','Previous client'];
 
 let contacts = [];
@@ -385,7 +385,7 @@ function renderContacts() {
         ${c.phone ? `<button class="card-btn call-btn" onclick="window.location='tel:${esc(c.phone)}'">📞 Call</button>` : ''}
         ${c.email ? `<button class="card-btn email-btn" onclick="window.location='mailto:${esc(c.email)}'">📧 Email</button>` : ''}
         ${fullAddr ? `<button class="card-btn" onclick="openNav('${encodeURIComponent(fullAddr)}')">🧭 Nav</button>` : ''}
-        <button class="card-btn appt-btn" onclick="openAppt('${encodeURIComponent(name)}','${encodeURIComponent(fullAddr||'')}')">📅 Appt</button>
+        <button class="card-btn appt-btn" onclick="openAppt('${encodeURIComponent(name)}','${encodeURIComponent(fullAddr||'')}','${encodeURIComponent(c.email||'')}')">📅 Appt</button>
       </div>
     </div>`;
   }).join('');
@@ -484,38 +484,107 @@ async function saveContact(id) {
 
 
 
-function openAppt(encodedName, encodedAddr) {
+function openAppt(encodedName, encodedAddr, encodedEmail) {
   const name = decodeURIComponent(encodedName);
   const addr = decodeURIComponent(encodedAddr);
-  const isMobile = /Android|iPhone|iPad/.test(navigator.userAgent);
+  const email = decodeURIComponent(encodedEmail || '');
 
-  // Build Google Calendar URL
-  const title = encodeURIComponent('Third Quote Estimate — ' + name);
-  const location = encodeURIComponent(addr);
-  const calUrl = `https://calendar.google.com/calendar/r/eventedit?text=${title}&location=${location}&details=${encodeURIComponent('Lead from Third Quote Exteriors CRM')}`;
-
-  if (!isMobile) {
-    window.open(calUrl, '_blank');
-    return;
-  }
-
-  // On mobile show picker — Google Calendar or native
+  // Remove any existing picker
   const existing = document.getElementById('apptPicker');
   if (existing) existing.remove();
+
   const div = document.createElement('div');
   div.id = 'apptPicker';
-  div.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#fff;border-radius:20px 20px 0 0;padding:20px;z-index:9999;box-shadow:0 -4px 20px rgba(0,0,0,0.2);';
+  div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9999;display:flex;align-items:flex-end;justify-content:center;';
   div.innerHTML = `
-    <div style="font-size:15px;font-weight:600;color:#111827;margin-bottom:4px;text-align:center">Set appointment</div>
-    <div style="font-size:13px;color:#9ca3af;margin-bottom:16px;text-align:center">${name}</div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <a href="${calUrl}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid #e5e7eb;border-radius:12px;text-decoration:none;color:#111827;font-weight:500;font-size:15px">📅 Google Calendar</a>
-      <button onclick="document.getElementById('apptPicker').remove()" style="padding:13px;border:none;background:#f3f4f6;border-radius:12px;font-size:14px;font-weight:500;color:#6b7280;cursor:pointer;font-family:inherit;margin-top:4px">Cancel</button>
+    <div style="background:#fff;border-radius:20px 20px 0 0;padding:20px;width:100%;max-width:520px;box-shadow:0 -4px 20px rgba(0,0,0,0.2);">
+      <div style="font-size:16px;font-weight:600;color:#111827;margin-bottom:4px;text-align:center">Set appointment</div>
+      <div style="font-size:13px;color:#9ca3af;margin-bottom:16px;text-align:center">${name}</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Date</label>
+          <input type="date" id="apptDate" style="width:100%;padding:11px 13px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:15px;font-family:inherit;" min="${new Date().toISOString().slice(0,10)}">
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:600;color:#374151;display:block;margin-bottom:5px">Time</label>
+          <input type="time" id="apptTime" style="width:100%;padding:11px 13px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:15px;font-family:inherit;" value="09:00">
+        </div>
+        <button onclick="confirmAppt('${encodedName}','${encodedAddr}','${encodedEmail}')" style="width:100%;padding:14px;background:#1a7a54;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;">Confirm appointment</button>
+        <button onclick="document.getElementById('apptPicker').remove()" style="width:100%;padding:12px;background:#f3f4f6;color:#6b7280;border:none;border-radius:12px;font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;">Cancel</button>
+      </div>
     </div>`;
   document.body.appendChild(div);
-  setTimeout(() => document.addEventListener('click', function h(e) {
-    if (!div.contains(e.target)) { div.remove(); document.removeEventListener('click', h); }
-  }), 150);
+}
+
+function confirmAppt(encodedName, encodedAddr, encodedEmail) {
+  const name = decodeURIComponent(encodedName);
+  const addr = decodeURIComponent(encodedAddr);
+  const email = decodeURIComponent(encodedEmail || '');
+  const dateVal = document.getElementById('apptDate').value;
+  const timeVal = document.getElementById('apptTime').value;
+
+  if (!dateVal) { alert('Please select a date.'); return; }
+  if (!timeVal) { alert('Please select a time.'); return; }
+
+  // Format date nicely
+  const dateObj = new Date(dateVal + 'T' + timeVal);
+  const dateStr = dateObj.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  const timeStr = dateObj.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+
+  // Build Google Calendar URL
+  // Format dates for calendar (YYYYMMDDTHHmmss)
+  const pad = n => String(n).padStart(2,'0');
+  const startDT = dateVal.replace(/-/g,'') + 'T' + timeVal.replace(':','') + '00';
+  // End time = start + 1 hour
+  const endObj = new Date(dateObj.getTime() + 60*60*1000);
+  const endDT = endObj.toISOString().replace(/[-:]/g,'').slice(0,15);
+
+  const calTitle = encodeURIComponent('Third Quote Estimate — ' + name);
+  const calLoc = encodeURIComponent(addr);
+  const calDetails = encodeURIComponent('Appointment scheduled via Third Quote Exteriors CRM');
+  const calUrl = `https://calendar.google.com/calendar/r/eventedit?text=${calTitle}&dates=${startDT}/${endDT}&location=${calLoc}&details=${calDetails}`;
+
+  // Build Gmail mailto with pre-filled body
+  const emailSubject = encodeURIComponent('Your Appointment with Third Quote Exteriors');
+  const firstName = name.split(' ')[0];
+  const emailBody = encodeURIComponent(
+    `Hi ${firstName},
+
+This is to confirm your appointment with Third Quote Exteriors.
+
+` +
+    `📅 Date: ${dateStr}
+` +
+    `🕐 Time: ${timeStr}
+` +
+    `📍 Address: ${addr}
+
+` +
+    `We look forward to meeting with you! If you need to reschedule please don't hesitate to reach out.
+
+` +
+    `Thank you,
+Third Quote Exteriors
+(360) 567-6987`
+  );
+  const gmailUrl = email
+    ? `https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(email)}&su=${emailSubject}&body=${emailBody}`
+    : null;
+
+  // Remove picker
+  document.getElementById('apptPicker').remove();
+
+  // Open calendar
+  window.open(calUrl, '_blank');
+
+  // If email exists, open Gmail after short delay
+  if (gmailUrl) {
+    setTimeout(() => {
+      if (confirm(`Open Gmail to send appointment confirmation to ${email}?`)) {
+        window.open(gmailUrl, '_blank');
+      }
+    }, 1000);
+  }
 }
 
 function openNav(encodedAddr) {
